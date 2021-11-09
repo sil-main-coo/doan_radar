@@ -13,7 +13,6 @@ class InitData extends UpdateDataEvent {
   InitData({this.angle = .0});
 
   @override
-  // TODO: implement props
   List<Object> get props => [angle];
 }
 
@@ -23,6 +22,14 @@ class UpdateData extends UpdateDataEvent {
   UpdateData({this.message}) : assert(message != null);
 
   @override
-  // TODO: implement props
   List<Object> get props => [message];
+}
+
+class UpdateErrorEvent extends UpdateDataEvent {
+  final String error;
+
+  UpdateErrorEvent({this.error}) : assert(error != null);
+
+  @override
+  List<Object> get props => [error];
 }

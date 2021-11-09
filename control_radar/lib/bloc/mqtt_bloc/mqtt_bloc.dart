@@ -24,6 +24,12 @@ class MQTTBloc extends Bloc<MQTTEvent, MQTTState> {
     } else if (event is DisconnectMQTTT) {
       _mqttService.disconnectMQTT();
 //      yield DisconnectedMQTT();
+    } else if (event is SendMessage) {
+      try {
+        _mqttService.sendMessage(event.message);
+      } catch (e) {
+        _updateDataBloc.add(UpdateErrorEvent(error: 'Lỗi khi gửi lệnh'));
+      }
     }
   }
 
@@ -45,7 +51,6 @@ class MQTTBloc extends Bloc<MQTTEvent, MQTTState> {
           final MqttPublishMessage recMess = c[0].payload;
           final pt =
               MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-
 //          debugPrint(
 //              '>>> Change notification - topic: <${c[0].topic}>, payload: <-- $pt -->');
 
@@ -57,15 +62,14 @@ class MQTTBloc extends Bloc<MQTTEvent, MQTTState> {
         _updateDataBloc.add(InitData()); // khởi tạo data vào update data
         yield ConnectedMQTT(); // thông báo connect thành công
       } else {
-        debugPrint(
-            'Client exception');
+        debugPrint('Client exception');
         _mqttService.disconnectMQTT();
-        yield ConnectMQTTFailedState();
+        yield ConnectMQTTFailedState(error: '');
       }
     } on Exception catch (e) {
       debugPrint('Client exception - $e');
       _mqttService.disconnectMQTT();
-      yield ConnectMQTTFailedState();
+      yield ConnectMQTTFailedState(error: '');
     }
   }
 }
