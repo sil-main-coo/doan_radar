@@ -1,5 +1,4 @@
 import 'package:controlradar/bloc/remote_bloc/remote_radar_bloc.dart';
-import 'package:controlradar/bloc/update_data_bloc/bloc.dart';
 import 'package:controlradar/constants/mqtt_topic.dart';
 import 'package:controlradar/models/mqtt/mqtt.dart';
 import 'package:flutter/material.dart';
